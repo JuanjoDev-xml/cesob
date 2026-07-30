@@ -1,0 +1,37 @@
+---
+// src/layouts/Layout.astro
+//
+// Este archivo SÍ va dentro de src/ -> src/layouts/Layout.astro
+// Astro no fuerza una estructura exacta, pero "layouts" es la carpeta
+// convencional para los componentes que envuelven páginas enteras
+// (el <html>, <head>, header/footer compartidos, etc.), separados de
+// "components", que son piezas más chicas y reutilizables (Hero,
+// cards, botones...). Mantener esa separación ayuda a que el proyecto
+// se lea igual para cualquiera que abra la carpeta src/.
+
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "CESOB — Centro de Estudios del Sudoeste Bonaerense",
+  description = "Centro de Estudios del Sudoeste Bonaerense: jornadas, charlas y producción académica sobre la región.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body class="font-sans">
+    <slot />
+  </body>
+</html>
