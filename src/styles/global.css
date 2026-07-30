@@ -1,1 +1,43 @@
-@import "tailwindcss";
+
+
+/* src/styles/global.css
+   Tailwind v4 ya no usa tailwind.config.js para el tema: los tokens
+   (colores, fuentes, etc.) se definen acá mismo con @theme, y Tailwind
+   genera automáticamente clases como bg-cesob-blue o font-sans a partir
+   de estas variables. Si tu instalación es Tailwind v3, avisame y te
+   paso la versión con tailwind.config.mjs. */
+
+   @import "tailwindcss";
+
+   /* Fuente única del sitio: Plus Jakarta Sans (instalada vía Fontsource,
+      ver instrucciones en el chat). La cargamos acá para que esté
+      disponible en toda la web sin pedirla a Google Fonts en cada visita. */
+   @import "@fontsource/plus-jakarta-sans/400.css";
+   @import "@fontsource/plus-jakarta-sans/500.css";
+   @import "@fontsource/plus-jakarta-sans/600.css";
+   @import "@fontsource/plus-jakarta-sans/700.css";
+   @import "@fontsource/plus-jakarta-sans/800.css";
+   
+   @theme {
+     /* Paleta: el celeste de marca + una versión oscura del mismo tono
+        (para textos sobre fondos claros sin usar negro puro, y para el
+        footer/secciones oscuras) + un gris azulado muy claro para separar
+        secciones sin cortar en seco a blanco/blanco. */
+     --color-cesob-blue: #5EC3E9;
+     --color-cesob-blue-dark: #2E93B8;
+     --color-cesob-navy: #163A4D;
+     --color-cesob-ink: #14191C;
+     --color-cesob-mist: #F3F8FA;
+   
+     --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+   }
+   
+   /* Suaviza el scroll cuando el header (a futuro) lleve a un CTA con
+      anchor link, por ejemplo "Ver jornadas" -> #jornadas */
+   html {
+     scroll-behavior: smooth;
+   }
+   
+   body {
+     @apply bg-white text-cesob-ink antialiased;
+   }

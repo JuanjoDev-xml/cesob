@@ -1,15 +1,11 @@
 ---
-
+// src/pages/index.astro
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import QuienesSomos from "../components/QuienesSomos.astro";
 ---
 
-<html lang="es">
-	<head>
-		<link rel="icon" href="../public/favicon.ico"/>
-		<meta name="viewport" content="width=device-width" />
-		<meta charset="utf-8">
-		<title>CESOB - Centro de Estudios del Sudoeste Bonaerense</title>
-	</head>
-	<body>
-		<h1>Descubrí el CESOB</h1>
-	</body>
-</html>
+<Layout>
+  <Hero />
+  <QuienesSomos />
+</Layout>
