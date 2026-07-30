@@ -1,0 +1,93 @@
+---
+// src/components/Hero.astro
+//
+// Es un .astro (no React) porque no tiene ningún estado ni interacción:
+// solo maquetación con Tailwind. La regla general para este proyecto
+// va a ser esa: si el componente no necesita useState, onClick con
+// lógica, etc., queda en Astro puro, que es más liviano (no manda JS
+// al navegador). React lo reservamos para lo que sí lo necesite, como
+// el buscador de Jornadas.
+---
+
+<section
+  class="relative flex min-h-[100svh] flex-col justify-end overflow-hidden"
+>
+  <!--
+    min-h-[100svh] en vez de min-h-screen:
+    100vh en mobile no descuenta la barra de direcciones del navegador,
+    así que el hero "salta" al hacer scroll. svh (small viewport height)
+    sí la tiene en cuenta y es más estable en celulares.
+  -->
+
+  <!-- Imagen de fondo -->
+  <img
+    src="/images/hero-bg.webp"
+    alt=""
+    class="absolute inset-0 -z-20 h-full w-full object-cover"
+  />
+  <!--
+    alt="" a propósito: es una imagen puramente decorativa (el
+    contenido real está en el texto de al lado), así un lector de
+    pantalla la saltea en vez de leer una descripción irrelevante.
+  -->
+
+  <!-- Degradé oscuro sobre la foto para que el texto blanco sea legible
+       en cualquier imagen que uses, sin depender de que la foto sea
+       oscura en la parte de abajo -->
+  <div
+    class="absolute inset-0 -z-10 bg-gradient-to-t from-cesob-ink/90 via-cesob-ink/40 to-cesob-ink/10"
+  >
+  </div>
+
+  <!-- Contenido -->
+  <div class="relative mx-auto w-full max-w-6xl px-6 pb-16 pt-32 sm:px-10 sm:pb-24 lg:px-16">
+    <!-- Eyebrow: la marca CESOB como sello, chico y con tracking amplio,
+         típico de comunicación institucional -->
+    <span
+      class="inline-block rounded-full border border-cesob-blue/60 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-cesob-blue"
+    >
+      CESOB
+    </span>
+
+    <!-- Título: en vez de repetir solo "CESOB", una frase que dice qué
+         hace el centro. Cambiala por la que más te represente, pero
+         esta cumple el trabajo del H1: decir en pocas palabras el
+         propósito del sitio, no solo el nombre. -->
+    <h1
+      class="mt-6 max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl"
+    >
+      Ideas que piensan el territorio
+    </h1>
+
+    <!-- Subtítulo: el nombre completo, tal como lo pediste -->
+    <p class="mt-4 max-w-xl text-lg font-medium text-white/80 sm:text-xl">
+      Centro de Estudios del Sudoeste Bonaerense
+    </p>
+
+    <!-- CTAs: en columna en mobile (más fácil de tocar, ocupan todo el
+         ancho), en fila desde sm -->
+    <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+      <a
+        href="/jornadas"
+        class="rounded-full bg-cesob-blue px-7 py-3 text-center text-base font-semibold text-cesob-ink transition-colors hover:bg-white sm:w-auto"
+      >
+        Ver jornadas
+      </a>
+      <a
+        href="#quienes-somos"
+        class="rounded-full border border-white/40 px-7 py-3 text-center text-base font-semibold text-white transition-colors hover:border-white hover:bg-white/10 sm:w-auto"
+      >
+        Conocenos
+      </a>
+    </div>
+  </div>
+
+  <!-- Línea de "horizonte": un guiño sutil al paisaje del sudoeste
+       bonaerense (llanura, línea recta al fondo), y de paso funciona
+       como elemento de marca que después podés repetir como separador
+       entre secciones -->
+  <div
+    class="absolute inset-x-0 bottom-0 h-[3px] bg-gradient-to-r from-transparent via-cesob-blue to-transparent"
+  >
+  </div>
+</section>
