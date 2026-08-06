@@ -32,6 +32,18 @@ const {
     <link rel="icon" href="/images/logo.png" />
     <meta name="description" content={description} />
     <title>{title}</title>
+
+    <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CESOB - Centro de Estudios del Sudoeste Bonaerense" />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://cesob.vercel.app/images/logo.png" />
+
+    <!-- Twitter / X Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CESOB - Centro de Estudios del Sudoeste Bonaerense" />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://cesob.vercel.app/images/logo.png" />
   </head>
   <body class="font-sans">
     <Header />
