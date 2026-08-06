@@ -1,0 +1,133 @@
+---
+// src/components/Footer.astro
+//
+// Todo estático, sin JS: el único cálculo es el año, que se resuelve
+// UNA VEZ cuando Astro genera el HTML en el build (no se actualiza
+// solo en vivo en el navegador). Para un sitio institucional que se
+// re-despliega de vez en cuando esto sobra; si algún día lo dejás
+// mucho tiempo sin tocar y te preocupa que quede "2026" para siempre,
+// avisame y lo resolvemos con una linea de JS mínima.
+const year = new Date().getFullYear();
+
+// Reemplazá estos dos por los links reales de CESOB
+const INSTAGRAM_URL = "https://instagram.com/somos.cesob";
+const GITHUB_URL = "https://github.com/JuanjoDev-xml/cesob";
+const LINKEDIN_URL = "https://www.linkedin.com/in/juan-jose-denk-guido";
+---
+
+<footer class="bg-cesob-ink text-white/70">
+  <div class="mx-auto max-w-6xl px-6 py-14 sm:px-10 lg:px-16">
+    <div
+      class="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-start sm:justify-between sm:text-left"
+    >
+      <div>
+        <p class="text-lg font-bold tracking-tight text-white">CESOB</p>
+        <p class="mt-1 text-sm">Centro de Estudios del Sudoeste Bonaerense</p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a
+          href={INSTAGRAM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram de CESOB"
+          class="social-icon"
+        >
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.8" />
+            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8" />
+            <circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" />
+          </svg>
+        </a>
+
+        <a
+          href={GITHUB_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub de CESOB"
+          class="social-icon"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.833.092-.647.35-1.088.636-1.338-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .268.18.58.688.482A10.02 10.02 0 0022 12.017C22 6.484 17.523 2 12 2z"
+            ></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div
+      class="mt-10 flex flex-col items-center gap-3 border-t border-white/10 pt-8 text-center text-sm sm:flex-row sm:justify-between"
+    >
+      <p>&copy; {year} CESOB. Todos los derechos reservados.</p>
+
+      <p>
+        Desarrollo web por
+        <span style="display: flex;">
+            <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" class="dev-credit">
+                Juan José Denk Guido
+              </a>
+        </span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Íconos sociales: gris apagado en reposo, celeste de marca + leve
+     "salto" hacia arriba al pasar el mouse. Nada estridente, es
+     footer institucional. */
+  .social-icon {
+    color: rgb(255 255 255 / 0.55);
+    transition:
+      color 0.25s ease,
+      transform 0.25s ease;
+  }
+  .social-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .social-icon:hover {
+    color: var(--color-cesob-blue);
+    transform: translateY(-2px);
+  }
+
+  /* Crédito de desarrollo: el "hover más copado" que pediste.
+     Es un subrayado que se dibuja desde el centro hacia los costados
+     (en vez de aparecer de golpe) combinado con el texto pasando a
+     celeste y un leve levantamiento. Todo con transiciones suaves,
+     nada de JS. */
+  .dev-credit {
+    position: relative;
+    display: inline-block;
+    font-weight: 600;
+    color: white;
+    transition:
+      color 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .dev-credit::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -2px;
+    height: 1.5px;
+    width: 100%;
+    background: var(--color-cesob-blue);
+    transform: translateX(-50%) scaleX(0);
+    transform-origin: center;
+    transition: transform 0.35s ease;
+  }
+
+  .dev-credit:hover {
+    color: var(--color-cesob-blue);
+    transform: translateY(-1px);
+  }
+
+  .dev-credit:hover::after {
+    transform: translateX(-50%) scaleX(1);
+  }
+</style>

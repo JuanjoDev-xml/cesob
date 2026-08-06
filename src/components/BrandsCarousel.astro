@@ -1,0 +1,197 @@
+---
+// src/components/BrandsCarousel.astro
+//
+// Igual que en el Hero, esto es un .astro con CSS puro, sin React ni
+// JS: es un anillo de 10 logos en 3D que gira solo con
+// transform-style: preserve-3d + una animación de rotateY. No hay
+// links ni estado que manejar, así que no hace falta ni un componente
+// interactivo ni una librería de carruseles.
+//
+// La idea: en vez de una tira 2D de logos, cada logo se ubica como una
+// "cara" alrededor de un cilindro invisible, mirando hacia afuera. El
+// cilindro entero gira solo, así que en todo momento algunas caras
+// están de frente (bien visibles) y otras "dando la vuelta" atrás.
+
+// const brands = Array.from({ length: 10 }, (_, i) => ({
+//   src: `/images/brands/brand-${i + 1}.webp`,
+//   alt: `Marca ${i + 1}`,
+// }));
+
+const brands = [
+    {
+        src: "images/brands/acce.webp",
+        alt: "Fundación ACCE",
+    },
+    {
+        src: "images/brands/fundasur.webp",
+        alt: "Dundasur",
+    },
+    {
+        src: "images/brands/costras.webp",
+        alt: "Costras De La Patagonia",
+    },
+    {
+        src: "images/brands/utn.webp",
+        alt: "UTN FRBB",
+    },
+    {
+        src: "images/brands/uns.webp",
+        alt: "Universidad Nacional del Sur",
+    },
+    {
+        src: "images/brands/uibb.webp",
+        alt: "Unión Industrial Bahía Blanca",
+    },
+    {
+        src: "images/brands/planeta-empanada.webp",
+        alt: "Planeta Empanada",
+    },
+    {
+        src: "images/brands/novissimo.webp",
+        alt: "Novissimo Pastas & Percado",
+    },
+    {
+        src: "images/brands/manteca-bakery.webp",
+        alt: "Manteca Bakery",
+    },
+    {
+        src: "images/brands/coffee-tiger.webp",
+        alt: "Coffee Tiger Co",
+    },
+]
+
+// Radio del cilindro: para que N caras de ancho FACE_WIDTH no se
+// encimen entre sí, el radio matemáticamente correcto es
+// (FACE_WIDTH / 2) / tan(180° / N). Con 10 logos de 130px de ancho da
+// ~200px. Si el día de mañana agregás o sacás marcas, este número hay
+// que recalcularlo (o pedime que lo haga).
+const FACE_WIDTH = 130;
+const RADIUS = 200;
+const STEP = 360 / brands.length; // grados entre cada logo: 36°
+---
+
+<section class="relative overflow-hidden bg-cesob-navy py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-6 sm:px-10 lg:px-16">
+    <div class="max-w-2xl">
+      <span class="text-sm font-semibold uppercase tracking-[0.2em] text-cesob-blue">
+        Marcas
+      </span>
+      <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+        Nos acompañan las siguientes empresas
+      </h2>
+    </div>
+  </div>
+
+  <!-- El "escenario" le da la perspectiva (cuánto se nota la
+       profundidad 3D). La animación en sí vive en .carousel-ring. -->
+  <div class="carousel-stage mt-16">
+    <div
+      class="carousel-ring"
+      style={`width: ${FACE_WIDTH}px;`}
+    >
+      {brands.map((brand, i) => (
+        <div
+          class="carousel-face"
+          style={`transform: rotateY(${STEP * i}deg) translateZ(${RADIUS}px);`}
+        >
+          <img src={brand.src} alt={brand.alt} loading="lazy" />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Halo celeste sutil abajo, para reforzar el aire "futurista" sin
+       agregar otro elemento nuevo a la paleta -->
+  <div
+    class="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-cesob-blue/10 to-transparent"
+  >
+  </div>
+</section>
+
+<style define:vars={{ faceWidth: `${FACE_WIDTH}px` }}>
+  .carousel-stage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 220px;
+    /* La perspectiva es la "distancia" imaginaria del ojo a la
+       pantalla: cuanto más chica, más exagerada se ve la profundidad.
+       1400px es un valor sutil, no exagerado. */
+    perspective: 1400px;
+  }
+
+  .carousel-ring {
+    position: relative;
+    height: 70px;
+    transform-style: preserve-3d;
+    animation: spin-ring 40s linear infinite;
+  }
+
+  /* Pausa la rotación al pasar el mouse, para quien quiera mirar un
+     logo puntual con calma (no aplica en mobile, ahí no hay hover) */
+  .carousel-stage:hover .carousel-ring {
+    animation-play-state: paused;
+  }
+
+  @keyframes spin-ring {
+    from {
+      transform: rotateY(0deg);
+    }
+    to {
+      transform: rotateY(360deg);
+    }
+  }
+
+  .carousel-face {
+    position: absolute;
+    inset: 0;
+    width: var(--faceWidth);
+    /* La rotación + translateZ de cada cara se define inline en el
+       style de arriba (distinta para cada una), así que acá no
+       repetimos "transform" para no pisarlo. */
+    backface-visibility: hidden;
+  }
+
+  .carousel-face img {
+    width: 100%;
+    height: 140%;
+    object-fit: contain;
+    border-radius: 0.75rem;
+    background: white;
+    padding: 0.85rem;
+    /* Logos en escala de grises hasta que quedan de frente y les pasás
+       el mouse por encima: un detalle sobrio en vez de mostrar los 10
+       a full color todo el tiempo */
+    filter: grayscale(1) opacity(0.85);
+    transition: filter 0.3s ease;
+  }
+
+  .carousel-face:hover img {
+    filter: grayscale(0) opacity(1);
+  }
+
+    @media screen and (max-width: 500px){
+        .carousel-face img{
+            filter: grayscale(0) opacity(1);
+        }
+    }
+
+  /* Quien pidió reducir movimiento: mostramos los logos quietos, uno
+     al lado del otro en 2D, en vez de forzar el giro 3D */
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-stage {
+      height: auto;
+      perspective: none;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .carousel-ring {
+      animation: none;
+      display: contents;
+    }
+    .carousel-face {
+      position: static;
+      transform: none !important;
+    }
+  }
+</style>
