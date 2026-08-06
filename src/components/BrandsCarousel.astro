@@ -170,6 +170,12 @@ const STEP = 360 / brands.length; // grados entre cada logo: 36°
     filter: grayscale(0) opacity(1);
   }
 
+    @media screen and (max-width: 500px){
+        .carousel-face img{
+            filter: grayscale(0) opacity(1);
+        }
+    }
+
   /* Quien pidió reducir movimiento: mostramos los logos quietos, uno
      al lado del otro en 2D, en vez de forzar el giro 3D */
   @media (prefers-reduced-motion: reduce) {
