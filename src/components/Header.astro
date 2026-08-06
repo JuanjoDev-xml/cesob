@@ -1,0 +1,188 @@
+---
+// src/components/Header.astro
+//
+// A diferencia del Hero o el BrandsCarousel, este SÍ necesita
+// JavaScript real: hay que abrir/cerrar un menú, guardar ese estado
+// (abierto/cerrado), cambiar el ícono de hamburguesa a X, y detectar
+// clics fuera del menú para cerrarlo. Ahí es donde trazamos la línea
+// que hablamos antes entre "esto lo resuelve CSS solo" y "esto
+// necesita lógica real". Como el comportamiento es autocontenido (no
+// comparte estado con otros componentes de la página), alcanza con
+// un <script> normal al final del archivo — no hace falta React para
+// esto, React lo dejamos para algo con más estado compartido, como el
+// buscador de Jornadas.
+
+const links = [
+  { label: "Inicio", href: "/" },
+  { label: "Biblioteca", href: "/biblioteca" },
+  { label: "Documentos propios", href: "/documentos-propios" },
+  { label: "Novedades", href: "/novedades" },
+  { label: "Estadísticas", href: "/estadisticas" },
+  { label: "Encuestas", href: "/encuestas" },
+  { label: "Notas periodísticas", href: "/notas-periodisticas" },
+  { label: "Nuestra identidad", href: "/nuestra-identidad" },
+];
+---
+
+<header class="fixed inset-x-0 top-0 z-50 bg-cesob-mist/75">
+  <!--
+    bg-cesob-mist/75: el mismo color de fondo que usamos en las cards
+    de "Quiénes somos" (cesob-mist), con /75 = 75% de opacidad. Ese
+    "/75" es la sintaxis de Tailwind para opacidad de color: cuanto
+    más alto el número, más sólido (menos transparente) se ve.
+
+    Es "fixed" (no "sticky") y no tiene ningún listener de scroll:
+    quisiste que no cambie nunca, así que directamente no le dimos
+    ninguna lógica que reaccione al scroll.
+  -->
+  <div class="mx-auto flex h-20 max-w-6xl items-center justify-between px-6 sm:px-10 lg:px-16">
+    <!-- Logo a la izquierda, funciona como link al inicio -->
+    <a href="/" aria-label="Ir al inicio de CESOB" class="shrink-0">
+      <img src="/images/logo.svg" alt="CESOB" class="h-9 w-auto" />
+    </a>
+
+    <!-- Botón hamburguesa: son 3 <span> (las "líneas"). El CSS de más
+         abajo las rota/oculta para que se vean como una X cuando el
+         botón tiene la clase "is-open" (se la agrega el script). -->
+    <button
+      id="nav-toggle"
+      type="button"
+      class="hamburger relative z-10 flex h-10 w-10 flex-col items-center justify-center gap-[5px]"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+      aria-label="Abrir menú"
+    >
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </div>
+
+  <!-- Panel del menú: un poco separado del header, alineado a la
+       derecha. Tiene max-height + overflow-y-auto para que, si hay
+       poco alto de pantalla (mobile con los 8 links), se pueda
+       scrollear adentro del panel en vez de desbordar la pantalla. -->
+  <nav
+    id="nav-menu"
+    class="nav-panel fixed right-4 top-[5.5rem] max-h-[calc(100svh-7rem)] w-[calc(100%-2rem)] overflow-y-auto rounded-2xl bg-cesob-mist/95 shadow-xl ring-1 ring-cesob-ink/5 sm:right-8 sm:w-72"
+    aria-hidden="true"
+  >
+    <ul class="flex flex-col divide-y divide-cesob-ink/10 p-2">
+      {links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class="block rounded-xl px-4 py-3 text-base font-semibold text-cesob-ink transition-colors hover:bg-white"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .hamburger-line {
+    display: block;
+    height: 2px;
+    width: 24px;
+    background-color: var(--color-cesob-ink);
+    border-radius: 999px;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+  /* Estado abierto (clase puesta por JS): la línea de arriba y la de
+     abajo rotan y se encuentran en el centro, formando la X. La del
+     medio se desvanece. Esto es lo que hace que "el logo de la
+     hamburguesa se transforme en X". */
+  .hamburger.is-open .hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .hamburger.is-open .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.is-open .hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* El panel arranca invisible y un poco corrido hacia arriba;
+     "pointer-events: none" evita que se pueda tocar/tabular a sus
+     links mientras está cerrado, aunque técnicamente siga en el DOM. */
+  .nav-panel {
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+  }
+  .nav-panel.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+</style>
+
+<script>
+  // Todo el comportamiento del menú vive acá: buscamos el botón y el
+  // panel por su id, y les togglemos una clase ("is-open") según lo
+  // que pase. Nada de frameworks, es DOM y eventos comunes.
+  const toggle = document.getElementById("nav-toggle");
+  const panel = document.getElementById("nav-menu");
+
+  if (toggle && panel) {
+    const closeMenu = () => {
+      toggle.classList.remove("is-open");
+      panel.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+      panel.setAttribute("aria-hidden", "true");
+      toggle.setAttribute("aria-label", "Abrir menú");
+    };
+
+    const openMenu = () => {
+      toggle.classList.add("is-open");
+      panel.classList.add("is-open");
+      toggle.setAttribute("aria-expanded", "true");
+      panel.setAttribute("aria-hidden", "false");
+      toggle.setAttribute("aria-label", "Cerrar menú");
+    };
+
+    // Click en el botón: si está cerrado lo abre, si está abierto lo cierra
+    toggle.addEventListener("click", () => {
+      const isOpen = toggle.classList.contains("is-open");
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    // Cerrar al tocar cualquier link de adentro del menú. Como cada
+    // link navega a otra página (Astro genera páginas reales, no es
+    // una SPA), esto ni siquiera es estrictamente necesario -al
+    // cambiar de página el menú vuelve a arrancar cerrado-, pero lo
+    // dejamos para que el cierre se vea inmediato antes de navegar.
+    panel.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    // Cerrar al tocar fuera del botón y del panel
+    document.addEventListener("click", (event) => {
+      const clickedInsidePanel = panel.contains(event.target);
+      const clickedToggle = toggle.contains(event.target);
+      const isOpen = toggle.classList.contains("is-open");
+
+      if (isOpen && !clickedInsidePanel && !clickedToggle) {
+        closeMenu();
+      }
+    });
+
+    // Extra de accesibilidad: cerrar con la tecla Escape
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeMenu();
+    });
+  }
+</script>
