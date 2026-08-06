@@ -12,10 +12,53 @@
 // cilindro entero gira solo, así que en todo momento algunas caras
 // están de frente (bien visibles) y otras "dando la vuelta" atrás.
 
-const brands = Array.from({ length: 10 }, (_, i) => ({
-  src: `/images/brands/brand-${i + 1}.webp`,
-  alt: `Marca ${i + 1}`,
-}));
+// const brands = Array.from({ length: 10 }, (_, i) => ({
+//   src: `/images/brands/brand-${i + 1}.webp`,
+//   alt: `Marca ${i + 1}`,
+// }));
+
+const brands = [
+    {
+        src: "images/brands/acce.webp",
+        alt: "Fundación ACCE",
+    },
+    {
+        src: "images/brands/fundasur.webp",
+        alt: "Dundasur",
+    },
+    {
+        src: "images/brands/costras.webp",
+        alt: "Costras De La Patagonia",
+    },
+    {
+        src: "images/brands/utn.webp",
+        alt: "UTN FRBB",
+    },
+    {
+        src: "images/brands/uns.webp",
+        alt: "Universidad Nacional del Sur",
+    },
+    {
+        src: "images/brands/uibb.webp",
+        alt: "Unión Industrial Bahía Blanca",
+    },
+    {
+        src: "images/brands/planeta-empanada.webp",
+        alt: "Planeta Empanada",
+    },
+    {
+        src: "images/brands/novissimo.webp",
+        alt: "Novissimo Pastas & Percado",
+    },
+    {
+        src: "images/brands/manteca-bakery.webp",
+        alt: "Manteca Bakery",
+    },
+    {
+        src: "images/brands/coffee-tiger.webp",
+        alt: "Coffee Tiger Co",
+    },
+]
 
 // Radio del cilindro: para que N caras de ancho FACE_WIDTH no se
 // encimen entre sí, el radio matemáticamente correcto es
@@ -34,7 +77,7 @@ const STEP = 360 / brands.length; // grados entre cada logo: 36°
         Marcas
       </span>
       <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-        Trabajamos junto a
+        Nos acompañan las siguientes empresas
       </h2>
     </div>
   </div>
