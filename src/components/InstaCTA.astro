@@ -1,0 +1,70 @@
+---
+// InstaCTA.astro
+// Este componente genera un CTA interactivo que se superpone perfectamente
+// en la unión de dos secciones con fondos de distinto color.
+---
+<!--
+  El contenedor principal DEBE estar RELATIVO para que el botón
+  posicionado ABSOLUTAMENTE se guíe por él. No le damos altura para no
+  afectar el layout, pero sí 'z-10' para estar sobre las secciones.
+-->
+<div class="relative z-10 w-full flex justify-center h-0">
+
+    <!--
+      El botón con posicionamiento ABSOLUTO.
+      - '-translate-y-1/2': Esta es la clave. Lo sube exactamente la mitad de su propia altura.
+      - bg-[#5EC3E9]: Tu color de fondo específico.
+      - transition-*: Define la transición para los efectos hover.
+      - scale, rotate: Efectos visuales interactivos al hover.
+    -->
+    <a
+      href="https://instagram.com/somos.cesob"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="
+        absolute
+        -translate-y-1/2
+        bg-[#5EC3E9]
+        text-white
+        font-bold
+        py-4
+        px-8
+        rounded-full
+        shadow-lg
+        flex
+        items-center
+        gap-3
+        transition-all
+        duration-300
+        ease-out
+        hover:bg-[#4faccf]
+        hover:scale-105
+        hover:-rotate-1
+        hover:shadow-2xl
+        focus:outline-none
+        focus:ring-4
+        focus:ring-[#5EC3E9]/50
+      "
+    >
+      <!-- Logo de Instagram en SVG para máxima nitidez (color blanco) -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="icon icon-tabler icon-tabler-brand-instagram"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <rect x="4" y="4" width="16" height="16" rx="4" />
+        <circle cx="12" cy="12" r="3" />
+        <line x1="16.5" y1="7.5" x2="16.5" y2="7.501" />
+      </svg>
+  
+      Seguinos en Instagram
+    </a>
+  </div>
